@@ -1,0 +1,193 @@
+POST
+{
+    serialNo
+    itemCode
+    itemName
+    customerPhone
+    customerName
+    customerAddress
+    sellerPhoneNumber
+    activeDate
+    expiredDate
+    warrantyMonths
+    activeBonus
+}
+
+# Ghi nhan dang ky bao hanh
+
+THÔNG TIN ĐĂNG KÝ BẢO HÀNH ĐIỆN TỬ ĐÃ ĐƯỢC GHI NHẬN
+SUNHOUSE cảm ơn Qúy khách <customerName> đã tin tưởng sử dụng dịch vụ. Chi tiết thông tin:
+Sản phẩm:
+<itemName>
+Mã số kích hoạt bảo hành:
+<serialNo>
+Thời hạn bảo hành:
+<warrantyMonths>
+Từ ngày:
+<activeDate>
+Đến ngày:
+<expiredDate>
+Để tìm hiểu thêm các chương trình đang diễn ra, vui lòng nhấn "Truy cập Zalo Mini App"
+
+-> Lay sdt khach hang
+-> IF sdt = none
+
+# neu khong nhan dung sdt khach hang -> fix + map lai du lieu khach hang
+function mapCustomer(customerName, customerPhone, address) {
+    const fixPhone = (phone) => {
+        if (!phone) return "";
+        return phone.replace(/^(\+?84)/, "0");
+    };
+
+    const firstnameLastname = (name) => {
+        let lastName = '';
+        let firstName = '';
+        if (typeof name === 'string') {
+            name = name.trim();
+        }
+        if (name) {
+            const splits = name.split(' ');
+            if (splits.length > 1) {
+                lastName = splits[0].trim();
+                firstName = splits.slice(1).join(' ');
+            } else {
+                firstName = name;
+            }
+        }
+        return { lastName, firstName };
+    };
+
+    const getFullAddress = (addr) => {
+        if (!addr) return "";
+        const parts = [
+            addr.address1,
+            addr.address2,
+            addr.ward,
+            addr.district,
+            addr.city,
+            addr.province,
+            addr.country_name,
+        ];
+        return parts.filter(p => p && p.trim()).join(", ");
+    };
+
+    const model = {
+        personal: {
+            first_name: firstnameLastname(customerName).firstName || "",
+            last_name: firstnameLastname(customerName).lastName || "",
+            phone: fixPhone(customerPhone),
+            birthday: "",
+            gender: ""
+        }
+    };
+
+    if (address) {
+        model.locationCode = {
+            firstName: address.first_name ?? "",
+            lastName: address.last_name ?? "",
+            isPrimary: true,
+            address: {
+                full: getFullAddress(address),
+                phone: fixPhone(address.phone),
+                country: {
+                    name: address.country_name ?? ""
+                },
+                ward: {
+                    name: address.ward ?? ""
+                },
+                district: {
+                    name: address.district ?? ""
+                },
+                province: {
+                    name: address.province ?? ""
+                },
+            },
+        };
+    }
+
+    return model;
+}
+
+=> post lai cho IT SUNHOUSE
+
+=> gui lai zns neu du lieu hoan chinh (co sdt)
+
+
+IF khong phai la khach hang -> la dai ly kich hoat
+
+{
+    customerPhone
+    sellerPhone
+}
+if customer
+if seller
+if data loi -> fix -> post lai -> gui lai
+
+
+# mapping + fix data phone seller
+function mapCustomer(_unusedName, sellerPhoneNumber, address) {
+    const fixPhone = (phone) => {
+        if (!phone) return "";
+        return phone.replace(/^(\+?84)/, "0");
+    };
+
+    const getFullAddress = (addr) => {
+        if (!addr) return "";
+        const parts = [
+            addr.address1,
+            addr.address2,
+            addr.ward,
+            addr.district,
+            addr.city,
+            addr.province,
+            addr.country_name,
+        ];
+        return parts.filter(p => p && p.trim()).join(", ");
+    };
+
+    const phone = fixPhone(sellerPhoneNumber);
+
+    const model = {
+        personal: {
+            first_name: phone,   // use phone as the "name"
+            last_name: "",       // no last name
+            phone: phone,
+            birthday: "",
+            gender: ""
+        }
+    };
+
+    if (address) {
+        model.locationCode = {
+            firstName: address.first_name ?? "",
+            lastName: address.last_name ?? "",
+            isPrimary: true,
+            address: {
+                full: getFullAddress(address),
+                phone: fixPhone(address.phone),
+                country: {
+                    name: address.country_name ?? ""
+                },
+                ward: {
+                    name: address.ward ?? ""
+                },
+                district: {
+                    name: address.district ?? ""
+                },
+                province: {
+                    name: address.province ?? ""
+                },
+            },
+        };
+    }
+
+    return model;
+}
+
+
+Cuoi cung:
+tong hop lai du lieu da ghi nhan tu IT SH va chay fix
+
+
+https://drive.google.com/uc?id=1SaEoRL5yaqhARqtGSSyOB6-h8-HdPk1y
+https://drive.google.com/uc?id=1uLoPwiWsLKz6_S41gHfHlkWqFrww96YF

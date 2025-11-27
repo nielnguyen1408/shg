@@ -1,0 +1,20 @@
+# Python caches
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# OS / editor noise
+desktop.ini
+Thumbs.db
+.DS_Store
+.vscode/
+
+# Database backups
+*.bak

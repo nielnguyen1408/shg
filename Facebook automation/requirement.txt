@@ -1,0 +1,1 @@
+pip install -U facebook_business openai python-dotenv pandas requests tldextract

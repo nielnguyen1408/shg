@@ -1,0 +1,2 @@
+TimeClose	Ticket	Symbol	Type	Entry	InitialSL	SL_Points	RiskMoney	R	TP0_Price	TP1_Price	TP2_Price	MFEPrice	HighestRMultiple	TP0_Hit	TP1_Hit	TP2_Hit	ClosePrice	CloseCause	CloseProfit	Commission	Swap	InitLots	Magic
+2025.11.04 08:51:56	206744046	XAUUSD	SELL	3999.371	4000.877	1506.0	10.54	1.018	3994.853	3991.841	3984.311	3996.692	1.78	0	0	0	3997.838	TP	10.73	0.00	0.00	0.07	0

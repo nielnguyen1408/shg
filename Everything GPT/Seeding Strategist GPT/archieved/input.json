@@ -1,0 +1,13 @@
+{
+  "bai_viet_goc": "Shark Phú lập 'đội đặc vụ' bán nồi, chảo trên Amazon: Quy tụ toàn Gen Z, có sản phẩm Best Sellers doanh số 2.000 chiếc mỗi tháng",
+  "dinh_huong": ["Comment ủng hộ sunhouse nhưng không khen quá đà", "Góc nhìn trung lập về chiến lược kinh doanh", "Nhận định tích cực về thị trường chứ không nhất định phải về sunhouse"],
+  "mo_ta_trang": "Cafef là trang báo mà tệp người đọc cũng kiểu văn phòng hoặc doanh nhân, nhiều ý kiến trái chiều",
+  "van_de": "có các khách hàng chê: Bán có 1000 cái nồi/chảo trên Amazon mà best? Bằng cái đại lý bán ah? ",
+  "tone": ["khách quan", "tích cực", "vui vẻ", "lạc quan"],
+  "mood": "tích cực",
+  "so_luong": 100,
+  "do_dai_tb": "theo approve hiện tại",
+  "yeu_cau_khac": ["một số comment có emoji", "không nhắc tới con số 2000 dễ gây tranh cãi"],
+  "yeu_cau_output_file": "Sử dụng knowledge, output cần có 4 cột và label đầy đủ, rà soát comment trùng",
+  "output_format": "export cả 2 file .json và .xlsx đảm bảo tiếng việt và emoji không lỗi"
+}

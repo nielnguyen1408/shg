@@ -1,0 +1,25 @@
+
+{
+  "parent": { "type": "database_id", "database_id": "REPLACE_WITH_YOUR_DATABASE_ID" },
+  "properties": {
+    "Ngày": { "title": {} },
+    "Cặp tiền": { "rich_text": {} },
+    "Khung thời gian": { "select": {"options": [
+      {"name": "M1"}, {"name": "M5"}, {"name": "M15"}, {"name": "H1"}, {"name": "H4"}, {"name": "D1"}
+    ]}},
+    "Setup": { "multi_select": {"options": [
+      {"name": "MTF_Sweep"}, {"name": "AddOn_MTF"}, {"name": "AddOn_LTF"}, {"name": "Reversal"}, {"name": "Continuation"}
+    ]}},
+    "Kết quả": { "select": {"options": [
+      {"name": "Win"}, {"name": "Loss"}, {"name": "BE"}
+    ]}},
+    "RR (R-Multiple)": { "number": {}},
+    "Emotion": { "multi_select": {"options": [
+      {"name": "Patient"}, {"name": "FOMO"}, {"name": "Fear"}, {"name": "Calm"}, {"name": "Greedy"}
+    ]}},
+    "Ảnh Chart": { "files": {} },
+    "Nhận xét nhanh": { "rich_text": {} },
+    "Sai khác": { "rich_text": {} },
+    "Ghi chú cải tiến": { "rich_text": {} }
+  }
+}

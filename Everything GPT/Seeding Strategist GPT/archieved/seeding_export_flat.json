@@ -1,0 +1,15 @@
+{
+  "title": "Seeding knowledge (auto)",
+  "persona": "Giọng tự nhiên, tích cực; Câu ngắn–trung bình, dễ đọc; Dùng emoji mức vừa",
+  "tone_patterns": "[đối tượng] dùng ổn, chăm sóc khách hàng nhiệt tình. | [mở hoài nghi] hơi lăn tăn, [chuyển ý] trải nghiệm xong thấy đáng tiền. | Câu chuyện [đối tượng] khá chạm, đọc thấy ấm lòng 😊",
+  "unigram_keywords": "thấy, sản, phẩm, dùng, ổn, chăm, sóc, khách, hàng, nhiệt, tình, câu, chuyện, thương, hiệu",
+  "bigram_keywords": "sản phẩm, phẩm dùng, dùng ổn, ổn chăm, chăm sóc, sóc khách, khách hàng, hàng nhiệt, nhiệt tình, đầu hơi",
+  "trigram_keywords": "sản phẩm dùng, phẩm dùng ổn, dùng ổn chăm, ổn chăm sóc, chăm sóc khách, sóc khách hàng, khách hàng nhiệt, hàng nhiệt tình",
+  "avg_token_length": 10.67,
+  "emoji_per_comment": 0.333,
+  "exclaim_per_comment": 0.0,
+  "question_per_comment": 0.0,
+  "style_constraints": "Tránh PR thô; Ưu tiên câu ngắn, trải nghiệm; Emoji vừa phải",
+  "recommendations": "Giữ ngôn ngữ đời thường; Dùng chuyển ý 'ban đầu… nhưng…'; Gợi câu hỏi nhẹ; Dùng keyword tự nhiên",
+  "example_lines": "Sản phẩm dùng ổn, chăm sóc khách hàng nhiệt tình. | Ban đầu hơi lăn tăn, nhưng trải nghiệm xong thấy đáng tiền. | Câu chuyện thương hiệu khá chạm, đọc thấy ấm lòng 😊"
+}
