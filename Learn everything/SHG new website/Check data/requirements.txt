@@ -1,0 +1,9 @@
+## Requirements ##
+
+python3 -m venv .venv
+source .venv/bin/activate   # every terminal session before running the script
+pip install --upgrade pip
+pip install requests pandas openpyxl
+
+## Command ##
+python3 check_links.py links.csv
