@@ -3,7 +3,8 @@ DECLARE @baseProductUrl NVARCHAR(200) = N'https://sunhouse.com.vn/';
 DECLARE @baseImageUrl   NVARCHAR(200) = N'https://sunhouse.com.vn/pic/product/';
 DECLARE @statusFilter   INT = NULL;               -- NULL = all; 1 = show; 0 = hide
 DECLARE @targetImage    NVARCHAR(255) = NULL;     -- NULL = all; set filename to filter one image
-DECLARE @code           NVARCHAR(255) = N'SHD8903'; -- NULL = all; set product code to filter
+DECLARE @code           NVARCHAR(255) = N'ST2210B-18'; -- NULL = all; set product code to filter
+USE sunhouse6_tatthanh_net_sunhousecomvndb1 -- Dùng để chọn database
 
 SELECT
     p.Id,
