@@ -1,0 +1,6 @@
+SELECT TOP (1000) [Id]
+      ,[CategoryId]
+      ,[ProductId]
+      ,[Language]
+      ,[Web]
+  FROM [sunhouse6_tatthanh_net_sunhousecomvndb1].[dbo].[CategoryProduct]

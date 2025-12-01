@@ -3,7 +3,7 @@
 ## Quick View
 | Task | Status | Deadline | Priority | Owner | Link/Chat | Next Step | Last Update |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Website SH | In progress | 26/11 – sửa listing + final timeline + import lần 3 | High | you | – | 1. Sửa nội dung trang listing key | pending |
+| Website SH | In progress | 26/11 – sửa listing + final timeline + import lần 3 | High | you | – | 1. Sửa nội dung trang listing key | 01/12 – cập nhật timeline & import |
 | SEO gói MNL DGD | In progress | 26/11 – gửi MKT review | Medium | you | – | 2. Check lại và làm việc với NCC | họp 27/11 9h |
 | Seo Quạt Trần | In progress | 30/11 (tạm) – xử lý on-page với Cánh Cam + SEONGON | Low | you | – | 1. Xử lý on-page website mới với Cánh Cam và SEONGON | pending |
 | ZNS và CDP | In progress | – | Medium | you | – | 1. Xác định goal & deliverables | pending |
@@ -22,16 +22,27 @@
   - [Link tổng](https://docs.google.com/spreadsheets/d/1mD675EYFJCN2xQI9tTTYzmR2rG1dAYyaJL41MZ37gBQ/edit?gid=0#gid=0)
   - [Review website – nội bộ](https://docs.google.com/spreadsheets/d/1qiGsemk0dhAZeXbKMhSmRf6vVgW96K4KBnGxkiRBtX8/edit?gid=785769648#gid=785769648)
   - [MKT – bộ trang sản phẩm](https://docs.google.com/spreadsheets/d/1eCHy9pBZXfzqUJtobw5beGUfCA0fnZR2Y2tZlEW7tn4/edit?gid=0#gid=0)
-- **Next step**: 1. Sửa nội dung trang listing key.
+- **Next step**: 1. Sửa nội dung trang listing key (đang tự kiểm tra).
 
 - **Subtasks**
-  - [ ] **1.** Sửa nội dung trang listing key (deadline 26/11)  
-  - [ ] **2.** Final timeline và gửi lại (deadline 26/11)  
-  - [ ] **3.** Push nhà thầu gửi lại import lần 3 (deadline 26/11)  
+  - [ ] **1.** Sửa nội dung trang listing key (deadline 26/11, cần tự check lại)  
+  - [x] **2.** Final timeline và gửi lại (deadline 26/11)  
+  - [x] **3.** Push nhà thầu gửi lại import lần 3 (deadline 26/11)  
+  - [ ] **4.** Brand feedback Trang chủ & Trang Global — _Status: pending (chờ Brand confirm lần cuối); PIC: Brand; Timeline: 30/10/2025 (Excel serial 45960)_  
+  - [ ] **4.1** Media confirm & gửi sang Cánh Cam cho Trang chủ & Trang Global — _Status: pending; PIC: Media; Timeline: 30/10/2025_  
+  - [ ] **5.** Brand feedback cho toàn bộ “Bộ trang giới thiệu” (Trang chủ, Global, Về SH, Nghiên cứu, Năng lực, Sunhouse toàn cầu, Cơ cấu tổ chức, Thành tựu, Trang sản phẩm thường) — _Status: pending final check; PIC: Brand_  
+  - [x] **5.1** Media feedback PC/MB cho “Bộ trang giới thiệu” — _Status: done theo sheet; PIC: Media; Links: tabs Review_  
+  - [ ] **6.** Khối sản phẩm/listing: hoàn thiện bộ lọc (đang thiếu 25 SP) & chia lại nhóm DGD — _Status: blocked chờ dữ liệu; PIC: MKT + Media_  
+  - [ ] **6.1** NCC import & họp trao đổi cụ thể (bao gồm kiểm tra import, media check & feedback) — _Status: pending; PIC: NCC + Media_  
+  - [ ] **6.2** Media fill bảng thông số cho NCC + yêu cầu MKT bổ sung dữ liệu — _Status: pending; PIC: Media + MKT_  
 
 - **Notes**:
   - Tổng số sản phẩm: 2434
   - Số sản phẩm ẩn: 620 (cần update lại)
+  - **Hạng mục & timeline chính từ sheet `251201. SHG _ Website SH 2025 - Overview.xlsx`**:
+    - Trang chủ & Trang Global: Brand feedback + media confirm (timeline serial 45960; next step Media confirm & gửi sang Cánh Cam).
+    - Bộ trang giới thiệu: Tất cả trang (Trang chủ, Global, Về SH, Nghiên cứu, Năng lực, Sunhouse toàn cầu, Cơ cấu tổ chức, Thành tựu, Trang sản phẩm thường) cần brand check lần cuối (content + hình ảnh final) và đã có media feedback PC/MB.
+    - Bộ trang sản phẩm/listing: Bộ lọc thiếu 25 sản phẩm; nhóm DGD chưa chia lại; NCC yêu cầu MKT fill bảng + media bổ sung thông số; các trang trung gian cần brief content → thiết kế → code.
 
 ### SEO gói MNL DGD
 - **Goal**: Kick off chiến dịch SEO gói MNL DGD.
