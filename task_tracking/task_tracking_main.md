@@ -7,7 +7,7 @@
 | SEO gói MNL DGD | In progress | 26/11 – gửi MKT review | Medium | you | – | 2. Check lại và làm việc với NCC | họp 27/11 9h |
 | Seo Quạt Trần | In progress | 30/11 (tạm) – xử lý on-page với Cánh Cam + SEONGON | Low | you | – | 1. Xử lý on-page website mới với Cánh Cam và SEONGON | pending |
 | ZNS và CDP | In progress | – | Medium | you | – | 1. Xác định goal & deliverables | pending |
-| Campaign Tết 2026 | In progress | TBD | Medium | you | - | 1. Xác định goal & deliverables | pending |
+| Campaign Tết 2026 | In progress | TBD | Medium | you | - | 1. Kickoff MV “Bật chất Tết Việt - SH”: booking UGC teaser + chuẩn bị ads/seeding + activation song song | Brief: cập nhật ngân sách, timeline & key truyền thông |
 
 ## Task Details
 
@@ -103,11 +103,27 @@
 - **Owner**: you
 - **Files/Dirs**: _(paths)_
 - **Chat/Link**: _(URL if any)_
-- **Next step**: 1. Xác định goal & deliverables.
+- **Next step**: 1. Xác định goal & deliverables chi tiết + phân bổ ngân sách 1.2B cho từng giai đoạn.
+- **Budget**: 1.2 tỷ VND cho digital (bao gồm ads + booking).
+- **Timeline**:
+  - Teasing: bắt đầu 25/12/2025 → trước 06/01/2026 (12 ngày thực hiện).
+  - Booming: bắt đầu 06/01/2026 → trước 06/02/2026 (31 ngày thực hiện).
+  - Duy trì: bắt đầu 06/02/2026 → 28/02/2026 (23 ngày nếu duy trì đến hết tháng 2).
+- **Key communications**:
+  1. **MV “Bật chất Tết Việt - SH”**  
+     - Trước khi ra MV: booking UGC content làm teaser tạo chú ý.  
+     - Sau khi ra MV: booking + đẩy ads + seeding để kích hoạt thảo luận, lan tỏa rộng.
+  2. **Activation, OOH, hoạt động AWO đồng hành**  
+     - Triển khai song song với MV để duy trì độ phủ omnichannel.
 
 - **Subtasks**
   - [ ] **1.** Xác định goal & deliverables  
-  - [ ] **2.** Lên timeline & ngân sách (tạm)  
-  - [ ] **3.** Phân công & chuẩn bị kickoff  
+  - [ ] **1.1** Booking UGC content teaser cho MV (trước 25/12)  
+  - [ ] **1.2** Lập plan ads + booking + seeding cho giai đoạn sau khi MV ra mắt  
+  - [ ] **2.** Lên timeline & ngân sách chi tiết (đã có base 1.2B digital + các mốc 25/12, 06/01, 06/02)  
+  - [ ] **3.** Phân công & chuẩn bị kickoff (bao gồm activation/OOH song song)  
 
-- **Notes**: _(blockers/context)_
+- **Notes**:
+  - Teasing 25/12 → 05/01: 12 ngày (từ 25/12 đến ngay trước 06/01).
+  - Booming 06/01 → 05/02: 31 ngày (từ 06/01 đến ngay trước 06/02).
+  - Duy trì 06/02 → 28/02: 23 ngày nếu giữ đến hết tháng 2 (theo yêu cầu “tính bao nhiêu ngày”).
