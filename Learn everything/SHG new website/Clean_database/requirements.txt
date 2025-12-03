@@ -5,3 +5,33 @@ python clean_info.py other.csv --csv-output custom.csv --json-output custom.json
 python clean_info.py info.xlsx
 
 # Running clean_info_v2
+
+
+
+# Active html to fetch data
+
+python -m http.server 8000 --bind 127.0.0.1
+http://127.0.0.1:8000/product_viewer.html
+
+# Flow
+all_info.xlsx = Toàn bộ dữ liệu của website
+clean_info.py = Làm sạch dữ liệu website
+-> Sẽ tạo ra: clean_info.json
+
+sp_hien_thi.csv = Dữ liệu sản phẩm hiển thị trên website
+
+product_viewer.html = tạo ra phiên bản so sánh giữa 2 website
+
+new_website_tinhnang.xls = tải từ website CC
+new_website_tinhnang.json -> 
+
+# new_web_convert.py
+python new_web_convert.py
+
+# Clear image v1
+Xóa toàn bộ <img> khỏi file json
+python clear_image_v1.py
+
+# build_product_viewer_v1.py
+python build_product_viewer_v1.py
+Dùng để tạo ra một file html gửi được đi cho CTV

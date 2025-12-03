@@ -7,7 +7,8 @@
 | SEO gói MNL DGD | In progress | 26/11 – gửi MKT review | Medium | you | – | 2. Check lại và làm việc với NCC | họp 27/11 9h |
 | Seo Quạt Trần | In progress | 30/11 (tạm) – xử lý on-page với Cánh Cam + SEONGON | Low | you | – | 1. Xử lý on-page website mới với Cánh Cam và SEONGON | pending |
 | ZNS và CDP | In progress | – | Medium | you | – | 1. Xác định goal & deliverables | pending |
-| Campaign Tết 2026 | In progress | TBD | Medium | you | - | 1. Kickoff MV “Bật chất Tết Việt - SH”: booking UGC teaser + chuẩn bị ads/seeding + activation song song | Brief: cập nhật ngân sách, timeline & key truyền thông |
+| Campaign Tết 2026 | In progress | 28/02/2026 | Medium | you | - | 1. Khóa goal/deliverables + phân bổ ngân sách 1.2B theo 3 phase (due 05/12) | 02/12: Họp kickoff - DMX yêu cầu hero xuất hiện, chuẩn bị plan brand day |
+| KHÁC | In progress | TBD | Medium | you | - | 1. Thêm công việc ad-hoc theo subtask | 02/12: Tạo bucket KHÁC tổng hợp việc lẻ |
 
 ## Task Details
 
@@ -96,34 +97,38 @@
 
 - **Notes**: _(blockers/context)_
 ### Campaign Tết 2026
-- **Goal**: _(mục tiêu tổng thể của chiến dịch Tết 2026)_
+- **Goal**: Triển khai chiến dịch “Bật chất Tết Việt - SH” phủ omnichannel (MV + activation/OOH) với hình ảnh hero hiện diện trên DMX, tận dụng ngân sách digital 1.2 tỷ để nuôi thảo luận và doanh thu xuyên suốt Teasing/Boombing/Duy trì.
 - **Status**: In progress
-- **Deadline**: _(tạm/TBD)_
+- **Deadline**: 28/02/2026 (kết thúc giai đoạn duy trì)
 - **Priority**: Medium
 - **Owner**: you
-- **Files/Dirs**: _(paths)_
-- **Chat/Link**: _(URL if any)_
-- **Next step**: 1. Xác định goal & deliverables chi tiết + phân bổ ngân sách 1.2B cho từng giai đoạn.
-- **Budget**: 1.2 tỷ VND cho digital (bao gồm ads + booking).
+- **Files/Dirs**: `note.md` (Họp Tết campaign)
+- **Chat/Link**: -
+- **Next step**: 1. Khóa goal/deliverables + phân bổ 1.2B digital cho 3 phase, cover yêu cầu DMX & plan brand day (due 05/12).
+- **Budget**: 1.2 tỷ VND cho digital (ads + booking).
 - **Timeline**:
-  - Teasing: bắt đầu 25/12/2025 → trước 06/01/2026 (12 ngày thực hiện).
-  - Booming: bắt đầu 06/01/2026 → trước 06/02/2026 (31 ngày thực hiện).
-  - Duy trì: bắt đầu 06/02/2026 → 28/02/2026 (23 ngày nếu duy trì đến hết tháng 2).
+  - Teasing: 25/12/2025 → trước 06/01/2026 (12 ngày).
+  - Booming: 06/01/2026 → trước 06/02/2026 (31 ngày).
+  - Duy trì: 06/02/2026 → 28/02/2026 (23 ngày nếu kéo hết tháng 2).
 - **Key communications**:
   1. **MV “Bật chất Tết Việt - SH”**  
-     - Trước khi ra MV: booking UGC content làm teaser tạo chú ý.  
-     - Sau khi ra MV: booking + đẩy ads + seeding để kích hoạt thảo luận, lan tỏa rộng.
+     - Trước MV: booking UGC teaser để tạo chú ý.  
+     - Sau MV: booking + đẩy ads + seeding kích hoạt thảo luận, lan tỏa rộng.
   2. **Activation, OOH, hoạt động AWO đồng hành**  
-     - Triển khai song song với MV để duy trì độ phủ omnichannel.
+     - Chạy song song với MV để duy trì độ phủ omnichannel và hỗ trợ DMX.
 
 - **Subtasks**
-  - [ ] **1.** Xác định goal & deliverables  
-  - [ ] **1.1** Booking UGC content teaser cho MV (trước 25/12)  
-  - [ ] **1.2** Lập plan ads + booking + seeding cho giai đoạn sau khi MV ra mắt  
-  - [ ] **2.** Lên timeline & ngân sách chi tiết (đã có base 1.2B digital + các mốc 25/12, 06/01, 06/02)  
-  - [ ] **3.** Phân công & chuẩn bị kickoff (bao gồm activation/OOH song song)  
+  - [ ] **1.** Khóa goal/deliverables + chuẩn KPI (DMX phải có hero, xác nhận quyền lợi khi lên DMX) (due 05/12)  
+  - [ ] **1.1** Booking UGC content teaser cho MV (khóa list UGC/KOL trước 20/12, phát trước 25/12)  
+  - [ ] **1.2** Lập plan ads + booking + seeding giai đoạn sau MV (draft media mix 12/12, chốt 20/12)  
+  - [ ] **2.** Lên timeline & ngân sách chi tiết (breakdown 1.2B theo Teasing/Boombing/Duy trì + activation/OOH) (due 08/12)  
+  - [ ] **2.1** Map deliverables & tracking sheet theo từng phase + PIC (due 08/12)  
+  - [ ] **2.2** So sánh báo giá nhà thầu media (due 08/12)  
 
 - **Notes**:
-  - Teasing 25/12 → 05/01: 12 ngày (từ 25/12 đến ngay trước 06/01).
-  - Booming 06/01 → 05/02: 31 ngày (từ 06/01 đến ngay trước 06/02).
-  - Duy trì 06/02 → 28/02: 23 ngày nếu giữ đến hết tháng 2 (theo yêu cầu “tính bao nhiêu ngày”).
+  - Họp kickoff (xem `note.md`): anh Tăng yêu cầu hero có mặt trên DMX, nếu chạy promotion phải giữ trọn quyền lợi; ecom cần brand day sớm.
+
+### KHÁC
+- **Subtasks**
+  - [ ] **1.** Làm rõ KPI của DMX cho DTDL (deadline 03/12)
+  - [ ] **2.** Làm nốt file KPI SEO và set họp (deadline 03/12)

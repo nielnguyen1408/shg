@@ -1,0 +1,577 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thong tin san pham Sunhouse</title>
+  <style>
+    :root {
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+      color: #1b1b1b;
+      background-color: #f5f6fa;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2rem;
+      box-sizing: border-box;
+    }
+    .app {
+      width: min(1100px, 100%);
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 30px 60px rgba(15, 23, 42, 0.12);
+      padding: 2rem 2.5rem 3rem;
+      box-sizing: border-box;
+    }
+    h1 {
+      margin-top: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 1.4rem;
+      color: #0b5ed7;
+    }
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 1.75rem;
+    }
+    label {
+      font-weight: 600;
+      color: #3a3a3a;
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border-radius: 8px;
+      border: 1px solid #cfd8e3;
+      font-size: 0.95rem;
+      box-sizing: border-box;
+    }
+    select {
+      width: 100%;
+      min-height: 220px;
+      border-radius: 10px;
+      border: 1px solid #cfd8e3;
+      padding: 0.8rem;
+      font-size: 0.95rem;
+      box-sizing: border-box;
+    }
+    .details {
+      border-top: 1px solid #e3e5ed;
+      padding-top: 1.5rem;
+    }
+    .details h2 {
+      margin: 0 0 1.5rem;
+      font-size: 1.3rem;
+      color: #111827;
+    }
+    .content {
+      padding: 1rem;
+      border-radius: 10px;
+      background: #f8fafc;
+      border: 1px solid #e3e5ed;
+      min-height: 120px;
+      line-height: 1.6;
+    }
+    .panels {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+    .panel {
+      border: 1px solid #e3e5ed;
+      border-radius: 12px;
+      padding: 1rem 1.25rem 1.5rem;
+      background: #fff;
+      box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.02);
+    }
+    .panel header {
+      margin-bottom: 1rem;
+    }
+    .panel-title {
+      margin: 0;
+      font-size: 1.1rem;
+      color: #0f172a;
+    }
+    .panel-subtitle {
+      margin: 0.15rem 0 0;
+      color: #6b7280;
+      font-size: 0.9rem;
+    }
+    .panel-sections section {
+      margin-bottom: 1.25rem;
+    }
+    .panel-sections h4 {
+      margin: 0 0 0.5rem;
+      font-size: 1rem;
+      color: #111827;
+    }
+    .panel-empty {
+      color: #9ca3af;
+      font-style: italic;
+      margin: 0;
+    }
+    .features-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .feature-item {
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+      background: #fdfefe;
+    }
+    .feature-item h5 {
+      margin: 0 0 0.5rem;
+      font-size: 1rem;
+      color: #0f172a;
+    }
+    .feature-content {
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+    .feature-image {
+      margin-top: 0.6rem;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #e0e7ff;
+      background: #fff;
+    }
+    .feature-image img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .feature-placeholder {
+      color: #9ca3af;
+      font-style: italic;
+    }
+    .placeholder {
+      color: #a0aec0;
+      font-style: italic;
+    }
+    #emptyState {
+      color: #6b7280;
+      font-style: italic;
+    }
+    @media (max-width: 720px) {
+      body {
+        padding: 1rem;
+      }
+      .app {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <h1>Thong tin san pham Sunhouse</h1>
+    <div class="controls">
+      <div>
+        <label for="searchInput">Loc theo ma san pham</label>
+        <input id="searchInput" type="text" placeholder="Nhap ma san pham..." autocomplete="off" />
+      </div>
+      <div>
+        <label for="productSelect">Danh sach ma</label>
+        <select id="productSelect" size="10"></select>
+      </div>
+    </div>
+    <p id="emptyState">Hay chon mot ma san pham de xem chi tiet.</p>
+    <div id="details" class="details" hidden>
+      <h2 id="productHeading"></h2>
+      <div class="panels">
+        <article class="panel" id="panel-clean">
+          <header>
+            <p class="panel-title">Ban goc</p>
+            <p class="panel-subtitle" id="panel-clean-source">Nguon: clean_info.json</p>
+          </header>
+          <p id="panel-clean-empty" class="panel-empty" hidden>Khong co ma nay trong clean_info.json.</p>
+          <div id="panel-clean-body" class="panel-sections">
+            <section>
+              <h4>Tong quan</h4>
+              <div id="panel-clean-tongquan" class="content placeholder">Khong co du lieu</div>
+            </section>
+            <section>
+              <h4>Thiet ke</h4>
+              <div id="panel-clean-thietke" class="content placeholder">Khong co du lieu</div>
+            </section>
+            <section>
+              <h4>Cong nang</h4>
+              <div id="panel-clean-congnang" class="content placeholder">Khong co du lieu</div>
+            </section>
+          </div>
+        </article>
+        <article class="panel" id="panel-new">
+          <header>
+            <p class="panel-title">Ban moi</p>
+            <p class="panel-subtitle" id="panel-new-source">Nguon: new_website_tinhnang.json</p>
+          </header>
+          <p id="panel-new-empty" class="panel-empty" hidden>Khong co ma nay trong new_website_tinhnang.json.</p>
+          <div id="panel-new-body">
+            <div id="panel-new-features" class="features-list"></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+  <script>
+    const DEFAULT_FIELDS = {
+      TongQuan: ["TongQuan"],
+      ThietKe: ["ThietKe"],
+      CongNang: ["CongNang"],
+    };
+
+    // Thay doi cac file JSON dau vao bang cach cap nhat 'url' va 'label' trong DATASETS.
+    const DATASETS = [
+      {
+        key: "clean",
+        url: "clean_info_noimage.json",
+        label: "clean_info_noimage.json",
+        type: "sections",
+        fields: DEFAULT_FIELDS,
+      },
+      {
+        key: "new",
+        url: "new_website_tinhnang_noimage.json",
+        label: "new_website_tinhnang_noimage.json",
+        type: "features",
+      },
+    ];
+
+    const datasetMeta = Object.fromEntries(DATASETS.map((meta) => [meta.key, meta]));
+    const sourceLabels = {
+      clean: document.getElementById("panel-clean-source"),
+      new: document.getElementById("panel-new-source"),
+    };
+    Object.entries(sourceLabels).forEach(([key, element]) => {
+      if (element && datasetMeta[key]) {
+        element.textContent = `Nguon: ${datasetMeta[key].label}`;
+      }
+    });
+
+    const searchInput = document.getElementById("searchInput");
+    const productSelect = document.getElementById("productSelect");
+    const details = document.getElementById("details");
+    const emptyState = document.getElementById("emptyState");
+    const productHeading = document.getElementById("productHeading");
+
+    const panels = {
+      clean: {
+        body: document.getElementById("panel-clean-body"),
+        empty: document.getElementById("panel-clean-empty"),
+        fields: {
+          TongQuan: document.getElementById("panel-clean-tongquan"),
+          ThietKe: document.getElementById("panel-clean-thietke"),
+          CongNang: document.getElementById("panel-clean-congnang"),
+        },
+      },
+      new: {
+        body: document.getElementById("panel-new-body"),
+        empty: document.getElementById("panel-new-empty"),
+        container: document.getElementById("panel-new-features"),
+      },
+    };
+
+    const state = {
+      datasets: {},
+      codes: [],
+      filteredCodes: [],
+      selectedCode: null,
+    };
+
+    DATASETS.forEach(({ key, type }) => {
+      state.datasets[key] = { rows: [], map: new Map(), error: null, type };
+    });
+
+    Promise.all(DATASETS.map(loadDataset)).then(finalizeLoad);
+
+    function loadDataset(meta) {
+      return fetch(meta.url)
+        .then((resp) => {
+          if (!resp.ok) {
+            throw new Error(`HTTP ${resp.status}`);
+          }
+          return resp.json();
+        })
+        .then((rows) => {
+          const normalized =
+            meta.type === "features"
+              ? normalizeFeatureRows(rows)
+              : normalizeRows(rows, meta.fields);
+          state.datasets[meta.key] = {
+            rows: normalized,
+            map: new Map(normalized.map((item) => [item.Code, item])),
+            error: null,
+            type: meta.type,
+          };
+        })
+        .catch((error) => {
+          console.error(`Khong tai duoc ${meta.url}`, error);
+          state.datasets[meta.key] = {
+            rows: [],
+            map: new Map(),
+            error: error.message || String(error),
+            type: meta.type,
+          };
+        });
+    }
+
+    function normalizeRows(rows, fieldMap = DEFAULT_FIELDS) {
+      if (!Array.isArray(rows)) {
+        return [];
+      }
+      return rows
+        .map((item) => normalizeEntry(item, fieldMap))
+        .filter((item) => item !== null);
+    }
+
+    function normalizeEntry(entry, fieldMap) {
+      if (!entry || typeof entry !== "object") {
+        return null;
+      }
+      const lowered = {};
+      Object.entries(entry).forEach(([key, value]) => {
+        lowered[String(key).toLowerCase()] = value;
+      });
+      const code = pickField(lowered, ["code"]);
+      if (!code) {
+        return null;
+      }
+      return {
+        Code: code,
+        TongQuan: pickField(
+          lowered,
+          (fieldMap?.TongQuan || DEFAULT_FIELDS.TongQuan).map((f) => f.toLowerCase())
+        ),
+        ThietKe: pickField(
+          lowered,
+          (fieldMap?.ThietKe || DEFAULT_FIELDS.ThietKe).map((f) => f.toLowerCase())
+        ),
+        CongNang: pickField(
+          lowered,
+          (fieldMap?.CongNang || DEFAULT_FIELDS.CongNang).map((f) => f.toLowerCase())
+        ),
+      };
+    }
+
+    function normalizeFeatureRows(rows) {
+      if (!Array.isArray(rows)) {
+        return [];
+      }
+      return rows
+        .map((entry) => {
+          if (!entry || typeof entry !== "object") {
+            return null;
+          }
+          const code = toText(entry.Code || entry.ProductCode);
+          if (!code) {
+            return null;
+          }
+          const featuresSource = Array.isArray(entry.Features)
+            ? entry.Features
+            : Array.isArray(entry.AttributeBlocks)
+            ? entry.AttributeBlocks
+            : [];
+          const features = featuresSource
+            .map((feature) => normalizeFeatureItem(feature))
+            .filter((feature) => feature !== null);
+          return { Code: code, Features: features };
+        })
+        .filter((entry) => entry !== null);
+    }
+
+    function normalizeFeatureItem(feature) {
+      if (!feature || typeof feature !== "object") {
+        return null;
+      }
+      const title = toText(feature.Title || feature.AttributeTitle);
+      const content = toText(feature.Content || feature.AttributeContentText);
+      const image = toText(feature.Image || feature.AttributeImageFile);
+      if (!title && !content && !image) {
+        return null;
+      }
+      return { Title: title, Content: content, Image: image };
+    }
+
+    function toText(value) {
+      if (value === undefined || value === null) {
+        return "";
+      }
+      return String(value).trim();
+    }
+
+    function pickField(source, candidates) {
+      for (const name of candidates) {
+        const value = source[name];
+        if (value !== undefined && value !== null && String(value).trim().length) {
+          return String(value).trim();
+        }
+      }
+      return "";
+    }
+
+    function finalizeLoad() {
+      const allCodes = new Set();
+      DATASETS.forEach(({ key }) => {
+        state.datasets[key].rows.forEach((item) => allCodes.add(item.Code));
+      });
+      state.codes = Array.from(allCodes).sort((a, b) =>
+        a.localeCompare(b)
+      );
+      state.filteredCodes = [...state.codes];
+      if (state.codes.length === 0) {
+        details.hidden = true;
+        emptyState.hidden = false;
+        emptyState.textContent =
+          "Khong tim thay ma nao trong cac file clean_info.json hoac new_website_tinhnang.json.";
+        return;
+      }
+      state.selectedCode = state.filteredCodes[0];
+      renderSelect();
+      productSelect.focus();
+    }
+
+    function renderSelect() {
+      productSelect.innerHTML = "";
+      const fragment = document.createDocumentFragment();
+      state.filteredCodes.forEach((code, index) => {
+        const option = document.createElement("option");
+        option.value = code;
+        option.textContent = code;
+        if (code === state.selectedCode) {
+          option.selected = true;
+        }
+        fragment.appendChild(option);
+        if (index === 0 && !state.selectedCode) {
+          option.selected = true;
+        }
+      });
+      productSelect.appendChild(fragment);
+      const hasItems = state.filteredCodes.length > 0;
+      productSelect.disabled = !hasItems;
+      if (!state.selectedCode && hasItems) {
+        state.selectedCode = state.filteredCodes[0];
+      }
+      updateDetails();
+    }
+
+    function updateDetails() {
+      const code = state.selectedCode;
+      if (!code) {
+        details.hidden = true;
+        emptyState.hidden = false;
+        emptyState.textContent = "Khong tim thay ma san pham phu hop.";
+        return;
+      }
+      emptyState.hidden = true;
+      details.hidden = false;
+      productHeading.textContent = `Ma: ${code}`;
+      DATASETS.forEach(({ key }) => {
+        const meta = datasetMeta[key];
+        renderPanel(panels[key], state.datasets[key], code, meta);
+      });
+    }
+
+    function renderPanel(panel, dataset, code, meta) {
+      const product = dataset.map.get(code);
+      if (!product) {
+        panel.body.hidden = true;
+        panel.empty.hidden = false;
+        if (dataset.rows.length === 0 && dataset.error) {
+          panel.empty.textContent = `Khong doc duoc ${meta.label}: ${dataset.error}`;
+        } else if (dataset.rows.length === 0) {
+          panel.empty.textContent = `Khong co du lieu nao trong ${meta.label}.`;
+        } else {
+          panel.empty.textContent = `Khong co ma nay trong ${meta.label}.`;
+        }
+        return;
+      }
+      panel.empty.hidden = true;
+      panel.body.hidden = false;
+      if (meta.type === "features") {
+        renderFeaturesList(panel.container, product.Features);
+      } else {
+        fillField(panel.fields.TongQuan, product.TongQuan);
+        fillField(panel.fields.ThietKe, product.ThietKe);
+        fillField(panel.fields.CongNang, product.CongNang);
+      }
+    }
+
+    function renderFeaturesList(container, features) {
+      container.innerHTML = "";
+      if (!features || !features.length) {
+        const placeholder = document.createElement("p");
+        placeholder.className = "feature-placeholder";
+        placeholder.textContent = "Khong co tinh nang nao cho ma nay.";
+        container.appendChild(placeholder);
+        return;
+      }
+      const fragment = document.createDocumentFragment();
+      features.forEach((feature, index) => {
+        fragment.appendChild(createFeatureNode(feature, index));
+      });
+      container.appendChild(fragment);
+    }
+
+    function createFeatureNode(feature, index) {
+      const wrapper = document.createElement("div");
+      wrapper.className = "feature-item";
+      const titleText = feature.Title || `Tinh nang ${index + 1}`;
+      const titleEl = document.createElement("h5");
+      titleEl.textContent = titleText;
+      wrapper.appendChild(titleEl);
+
+      if (feature.Content) {
+        const contentEl = document.createElement("div");
+        contentEl.className = "feature-content";
+        contentEl.innerHTML = feature.Content;
+        wrapper.appendChild(contentEl);
+      }
+
+      if (feature.Image) {
+        const imageWrapper = document.createElement("div");
+        imageWrapper.className = "feature-image";
+        const img = document.createElement("img");
+        img.src = feature.Image;
+        img.alt = titleText;
+        imageWrapper.appendChild(img);
+        wrapper.appendChild(imageWrapper);
+      }
+      return wrapper;
+    }
+
+    function fillField(element, value) {
+      if (value && value.trim()) {
+        element.classList.remove("placeholder");
+        element.innerHTML = value;
+      } else {
+        element.classList.add("placeholder");
+        element.innerHTML = "Khong co du lieu";
+      }
+    }
+
+    productSelect.addEventListener("change", () => {
+      state.selectedCode = productSelect.value || null;
+      updateDetails();
+    });
+
+    searchInput.addEventListener("input", (event) => {
+      const keyword = event.target.value.trim().toLowerCase();
+      state.filteredCodes = state.codes.filter((code) =>
+        code.toLowerCase().includes(keyword)
+      );
+      state.selectedCode = state.filteredCodes[0] || null;
+      renderSelect();
+    });
+  </script>
+</body>
+</html>
