@@ -1,0 +1,7 @@
+
+
+# Running clean_info
+python clean_info.py other.csv --csv-output custom.csv --json-output custom.json
+python clean_info.py info.xlsx
+
+# Running clean_info_v2
