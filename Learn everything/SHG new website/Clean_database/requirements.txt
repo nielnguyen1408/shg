@@ -1,3 +1,6 @@
+# File gốc
+new_website_tinhnang.xls (cần check lại xem mình viết sai tên trong python file không)
+all_info.xlsx == file export all data từ web SH
 
 
 # Running clean_info
@@ -32,6 +35,13 @@ python new_web_convert.py
 Xóa toàn bộ <img> khỏi file json
 python clear_image_v1.py
 
+# Input image v1
+Đẩy link ảnh vào để json và html hiển thị ảnh.
+
+If you need other files updated, rerun python input_image_v1.py --input <file>.json --output <file>.json --base-url <domain> [--image-keys key1,key2].
+
+
 # build_product_viewer_v1.py
 python build_product_viewer_v1.py
 Dùng để tạo ra một file html gửi được đi cho CTV
+
