@@ -141,6 +141,25 @@ def handle_player_fold(player_contrib: int, banker_contrib: int, banker_cards: L
     render_cards("Banker", banker_cards)
 
 
+def print_fold_history(fe_log: List[dict]) -> None:
+    if not fe_log:
+        return
+    print("Banker fold-equity history (playtest):")
+    for entry in fe_log:
+        street = entry.get("street", "?")
+        fe = entry.get("fe")
+        bet = entry.get("bet")
+        pot = entry.get("pot")
+        if fe is None:
+            continue
+        parts = [f"{street}: FE={fe:.2f}"]
+        if bet is not None:
+            parts.append(f"bet ${bet}")
+        if pot is not None:
+            parts.append(f"pot ${pot}")
+        print(" - " + " | ".join(parts))
+
+
 def main():
     print(GAME_TITLE)
     print(f"Start bankroll: ${START_BANKROLL:,} | Goal: ${TARGET_BANKROLL:,}")
@@ -169,6 +188,7 @@ def main():
             current_small = hand_state["current_small"]
             current_big = hand_state["current_big"]
             stage = hand_state.get("stage", "preflop")
+            fe_log = hand_state.get("fe_log", [])
             pot = player_contrib + banker_contrib
             print(f"\n--- Hand {hand_number} (resumed) ---")
             # clear pending hand from save file now that it's loaded
@@ -218,7 +238,9 @@ def main():
                 "current_small": current_small,
                 "current_big": current_big,
                 "stage": stage,
+                "fe_log": [],
             }
+            fe_log = hand_state["fe_log"]
 
         print(f"Balance ${balance:,} | Blinds ${current_small}/${current_big}")
         print(f"Hero: {player_role}")
@@ -227,10 +249,16 @@ def main():
         # Pre-Flop betting (no community cards yet)
         if stage == "preflop":
             if player_role == "BB":
+                # Banker is SB: acts first pre-flop with only call/check/fold (no raises).
                 banker_to_call = max(player_contrib - banker_contrib, 0)
                 if banker_to_call > 0:
                     pot_before = pot
-                    if banker_folds(banker_to_call, pot_before, banker_cards, []):
+                    banker_folded, fe = banker_folds(banker_to_call, pot_before, banker_cards, [])
+                    fe_log.append(
+                        {"street": "Pre-Flop (SB complete)", "fe": fe, "bet": banker_to_call, "pot": pot_before}
+                    )
+                    hand_state["fe_log"] = fe_log
+                    if banker_folded:
                         pot = player_contrib + banker_contrib
                         balance += pot
                         print(
@@ -238,6 +266,7 @@ def main():
                             f"You win pot ${pot}. Balance: ${balance:,}"
                         )
                         render_cards("Banker", banker_cards)
+                        print_fold_history(fe_log)
                         pending_hand = None
                         hand_number += 1
                         continue
@@ -245,6 +274,8 @@ def main():
                     hand_state["banker_contrib"] = banker_contrib
                     pot = player_contrib + banker_contrib
                     print(f"Banker completes small blind (adds ${banker_to_call}). Pot ${pot}.")
+                else:
+                    print("Banker checks as small blind.")
             to_call = max(banker_contrib - player_contrib, 0)
             try:
                 bet = prompt_street_bet("Pre-Flop", pot, balance, hand_number, preflop=True, to_call=to_call)
@@ -261,7 +292,12 @@ def main():
                 balance -= bet
                 hand_state["player_contrib"] = player_contrib
                 is_raise = bet > to_call
-                if is_raise and banker_folds(bet, pot_before, banker_cards, []):
+                banker_folded = False
+                if is_raise:
+                    banker_folded, fe = banker_folds(bet, pot_before, banker_cards, [])
+                    fe_log.append({"street": "Pre-Flop", "fe": fe, "bet": bet, "pot": pot_before})
+                    hand_state["fe_log"] = fe_log
+                if is_raise and banker_folded:
                     pot = player_contrib + banker_contrib
                     balance += pot
                     print(
@@ -269,6 +305,7 @@ def main():
                         f"You win pot ${pot}. Balance: ${balance:,}"
                     )
                     render_cards("Banker", banker_cards)
+                    print_fold_history(fe_log)
                     hand_number += 1
                     pending_hand = None
                     continue
@@ -307,6 +344,11 @@ def main():
             print(f"Pot ${pot}")
             render_cards("Board", visible_board)
             render_cards("Player", player_cards)
+
+            banker_acts_first = player_role == "SB"  # banker is BB post-flop
+            if banker_acts_first:
+                print("Banker checks.")
+
             try:
                 bet = prompt_street_bet(street_name, pot, balance, hand_number)
             except PlayerFold:
@@ -315,12 +357,16 @@ def main():
                 break
             except PlayerQuit:
                 handle_player_quit(balance, hand_number, hand_state)
+
             if bet > 0:
                 pot_before = pot
                 player_contrib += bet
                 balance -= bet
                 hand_state["player_contrib"] = player_contrib
-                if banker_folds(bet, pot_before, banker_cards, visible_board):
+                banker_folded, fe = banker_folds(bet, pot_before, banker_cards, visible_board)
+                fe_log.append({"street": street_name, "fe": fe, "bet": bet, "pot": pot_before})
+                hand_state["fe_log"] = fe_log
+                if banker_folded:
                     pot = player_contrib + banker_contrib
                     balance += pot
                     print(
@@ -328,6 +374,7 @@ def main():
                         f"You win pot ${pot}. Balance: ${balance:,}"
                     )
                     render_cards("Banker", banker_cards)
+                    print_fold_history(fe_log)
                     hand_ended_early = True
                     break
                 banker_needed = max(player_contrib - banker_contrib, 0)
@@ -341,7 +388,11 @@ def main():
                 print(f"{action_text} Pot now ${pot}. Your balance: ${balance:,}")
             else:
                 pot = player_contrib + banker_contrib
-                print(f"{street_name}: check. Pot ${pot}.")
+                if banker_acts_first:
+                    print(f"{street_name}: check. Pot ${pot}.")
+                else:
+                    # Player checked, banker (SB) acts after with only check.
+                    print(f"{street_name}: you check. Banker checks. Pot ${pot}.")
 
         if hand_ended_early:
             pending_hand = None
@@ -359,6 +410,7 @@ def main():
         render_cards("Player", player_cards)
         render_cards("Banker", banker_cards)
         print(f"Winner: {winner.capitalize()} with {winning_hand}")
+        print_fold_history(fe_log)
 
         if winner == "tie":
             balance += player_contrib

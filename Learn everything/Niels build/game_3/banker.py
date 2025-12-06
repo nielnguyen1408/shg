@@ -1,7 +1,9 @@
 import random
-from typing import List, Optional
+import itertools
+from typing import Dict, List, Optional, Tuple
 
 from config import (
+    BOARD_WEAK_BOARD_CALL_MULTIPLIER,
     DRAW_FOLD_MULTIPLIER,
     FLOP_BOTTOM_PAIR_MULTIPLIER,
     FLOP_MID_PAIR_MULTIPLIER,
@@ -11,24 +13,133 @@ from config import (
     PREFLOP_FEATURE_STEP,
     PREFLOP_MAX_MULTIPLIER,
     PREFLOP_MIN_MULTIPLIER,
+    RANKS,
     RIVER_WEAK_HAND_MULTIPLIER,
+    SUITS,
 )
 from poker_eval import best_hand, card_rank_value
 
 
-def banker_strength_multiplier(level: int) -> float:
+def banker_strength_multiplier(
+    level: int, tiebreak: List[int], best_combo: List[str], banker_cards: List[str], board_cards: List[str]
+) -> float:
     """
-    Convert banker hand strength level (0-8) to a fold-equity multiplier.
-    Lower levels -> more likely to fold, higher levels -> less likely.
+    Convert hand strength to a fold-equity multiplier using the full ranking.
+    Lower multiplier -> folds less. Incorporates sub-tiers for high card,
+    flush, and straight, plus detection for “one-card” straights.
     """
-    if level <= 1:  # High Card, One Pair
-        return 1.5
-    if level <= 3:  # Two Pair, Trips
-        return 1.0
-    if level <= 5:  # Straight, Flush
-        return 0.7
-    # Full House or better
-    return 0.4
+    banker_cards_in_best = sum(1 for card in best_combo if card in banker_cards)
+
+    if level == 8:  # Straight Flush
+        return 0.2
+    if level == 7:  # Quads
+        return 0.25
+    if level == 6:  # Full House
+        return 0.35
+    if level == 5:  # Flush
+        top_rank = tiebreak[0]
+        if top_rank >= 11:  # A/K high flush
+            return 0.4
+        if top_rank >= 8:  # Q/J/T high flush
+            return 0.55
+        return 0.75  # low flush
+    if level == 4:  # Straight
+        straight_high = tiebreak[0]
+        if banker_cards_in_best <= 1:  # one-card or board straight
+            if straight_high >= 10:  # Q-high or better
+                return 0.75
+            return 0.9
+        if straight_high >= 10:
+            return 0.6  # high straight
+        if straight_high >= 7:  # 9-high / 8-high
+            return 0.75
+        return 0.9  # low straight
+    if level == 3:  # Trips
+        return 0.8
+    if level == 2:  # Two Pair
+        return 0.95
+    if level == 1:  # One Pair (further tuned by pair_category elsewhere)
+        return 1.05
+    if level == 0:  # High Card
+        high_card = tiebreak[0]
+        if high_card >= 11:  # A/K high
+            return 1.2
+        return 1.45  # weaker highs
+    return 1.0
+
+
+def board_texture_level(board_cards: List[str]) -> Optional[int]:
+    """
+    Rough strength of the board alone (0-8 scale) to detect weak boards.
+    Uses full evaluation once 5 cards are out; otherwise approximates
+    with pairs/trips/2p vs. high card.
+    """
+    if len(board_cards) < 3:
+        return None
+    if len(board_cards) >= 5:
+        level, _, _ = best_hand(board_cards)
+        return level
+
+    rank_counts = {}
+    for card in board_cards:
+        val = card_rank_value(card[0])
+        rank_counts[val] = rank_counts.get(val, 0) + 1
+
+    counts = sorted(rank_counts.values(), reverse=True)
+    if counts[0] >= 3:
+        return 3  # trips on board
+    if len(counts) >= 2 and counts[0] == 2 and counts[1] == 2:
+        return 2  # two pair on board
+    if counts[0] == 2:
+        return 1  # one pair on board
+    return 0  # high card board
+
+
+def banker_plays_board_only(banker_cards: List[str], board_cards: List[str]) -> bool:
+    """
+    True if the banker best hand uses only board cards (common chop),
+    meaning banker has not improved beyond the board.
+    """
+    total_cards = banker_cards + board_cards
+    if len(total_cards) < 5:
+        return False
+    _, _, banker_best_combo = best_hand(total_cards)
+    return not any(card in banker_cards for card in banker_best_combo)
+
+
+def range_strength_stats(
+    banker_cards: List[str], board_cards: List[str]
+) -> Tuple[int, int, int, int, Dict[int, int]]:
+    """
+    Evaluate banker hand vs. all remaining 2-card combos.
+    Returns (better, tie, worse, total, counts_by_level).
+    Counts help gauge how banker ranks within the possible hand space.
+    """
+    total_cards = banker_cards + board_cards
+    if len(total_cards) < 5:
+        return 0, 0, 0, 0, {}
+
+    banker_rank = best_hand(total_cards)
+    banker_level = banker_rank[0]
+
+    deck = [r + s for r in RANKS for s in SUITS]
+    remaining = [c for c in deck if c not in total_cards]
+
+    better = tie = worse = 0
+    counts_by_level: Dict[int, int] = {}
+
+    for opp in itertools.combinations(remaining, 2):
+        opp_level, _, _ = best_hand(list(opp) + board_cards)
+        counts_by_level[opp_level] = counts_by_level.get(opp_level, 0) + 1
+        if opp_level > banker_level:
+            better += 1
+        elif opp_level < banker_level:
+            worse += 1
+        else:
+            tie += 1
+
+    total = better + tie + worse
+    return better, tie, worse, total, counts_by_level
 
 
 def preflop_banker_multiplier(banker_cards: List[str]) -> float:
@@ -163,7 +274,7 @@ def pair_category(banker_cards: List[str], board_cards: List[str]) -> Optional[s
     return None
 
 
-def banker_folds(bet: int, pot: int, banker_cards: List[str], board_cards: List[str]) -> bool:
+def banker_folds(bet: int, pot: int, banker_cards: List[str], board_cards: List[str]) -> Tuple[bool, float]:
     """
     Decide whether the banker folds based on bet size, pot,
     and banker hand strength vs. the current board.
@@ -172,7 +283,7 @@ def banker_folds(bet: int, pot: int, banker_cards: List[str], board_cards: List[
     Then adjust FE by a multiplier derived from banker hand strength.
     """
     if bet <= 0:
-        return False
+        return False, 0.0
     pot_effective = pot if pot > 0 else bet
     fold_equity = bet / (bet + pot_effective)
 
@@ -189,9 +300,25 @@ def banker_folds(bet: int, pot: int, banker_cards: List[str], board_cards: List[
         # Pure pre-flop: use hand-shape based heuristic.
         strength_multiplier = preflop_banker_multiplier(banker_cards)
     elif total_cards >= 5:
-        # Post-flop: use full 7-card evaluation.
-        level, _, _ = best_hand(banker_cards + board_cards)
-        strength_multiplier = banker_strength_multiplier(level)
+        # Post-flop: use full 7-card evaluation with richer sub-tiering.
+        level, tiebreak, best_combo = best_hand(banker_cards + board_cards)
+        strength_multiplier = banker_strength_multiplier(level, tiebreak, best_combo, banker_cards, board_cards)
+        board_level = board_texture_level(board_cards)
+        if board_level is not None and board_level <= 1:
+            # On weak boards (high card / single pair) where banker only plays board,
+            # reduce fold-equity so banker calls more and avoids over-folding chops.
+            if level == board_level and banker_plays_board_only(banker_cards, board_cards):
+                strength_multiplier *= BOARD_WEAK_BOARD_CALL_MULTIPLIER
+        better, tie, worse, total, _ = range_strength_stats(banker_cards, board_cards)
+        percentile = None
+        if total > 0:
+            percentile = better / total  # 0 = nuts, 1 = worst
+            if percentile <= 0.1:
+                strength_multiplier *= 0.5
+            elif percentile <= 0.25:
+                strength_multiplier *= 0.65
+            elif percentile <= 0.5:
+                strength_multiplier *= 0.85
         if stage == "flop":
             category = pair_category(banker_cards, board_cards)
             if category == "top":
@@ -207,9 +334,13 @@ def banker_folds(bet: int, pot: int, banker_cards: List[str], board_cards: List[
         strength_multiplier = banker_strength_multiplier(0)
 
     draw_multiplier = 1.0
-    if has_flush_draw(banker_cards, board_cards) or has_straight_draw(banker_cards, board_cards):
-        draw_multiplier = DRAW_FOLD_MULTIPLIER
+    has_draw = has_flush_draw(banker_cards, board_cards) or has_straight_draw(banker_cards, board_cards)
+    if has_draw:
+        # Only protect draws when hand isn't already very weak in range-percentile terms.
+        # For weak/high-card trash near the bottom of range, keep FE higher (no reduction).
+        if percentile is None or percentile <= 0.35 or level >= 2:
+            draw_multiplier = DRAW_FOLD_MULTIPLIER
 
     fold_equity *= strength_multiplier * draw_multiplier * FOLD_EQUITY_SCALE
     fold_equity = max(0.0, min(1.0, fold_equity))
-    return random.random() < fold_equity
+    return random.random() < fold_equity, fold_equity

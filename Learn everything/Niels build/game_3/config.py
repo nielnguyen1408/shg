@@ -24,6 +24,8 @@ FLOP_TOP_PAIR_MULTIPLIER: float = 0.6
 FLOP_MID_PAIR_MULTIPLIER: float = 0.8
 FLOP_BOTTOM_PAIR_MULTIPLIER: float = 0.95
 RIVER_WEAK_HAND_MULTIPLIER: float = 1.3
+# If banker is only “playing the board” on a weak board, reduce fold-equity so banker calls more.
+BOARD_WEAK_BOARD_CALL_MULTIPLIER: float = 0.6
 
 # Pre-flop fold-equity tuning
 # Banker folds more with trash hands (no high cards, offsuit, unconnected)
