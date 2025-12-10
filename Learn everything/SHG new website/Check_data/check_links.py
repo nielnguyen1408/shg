@@ -103,19 +103,30 @@ def check_link(url: str, targets: List[str], timeout: float) -> dict[str, str]:
             headers={"User-Agent": USER_AGENT},
             timeout=timeout,
         )
-        response.raise_for_status()
     except requests.RequestException as exc:
-        return {"error": f"error: {exc}"}
+        return {"status": "request_error", "detail": str(exc)}
+
+    status_code = response.status_code
+    if status_code >= 400:
+        # Stop early on HTTP errors; no need to parse body.
+        return {
+            "status": "http_error",
+            "status_code": status_code,
+            "detail": response.reason or "",
+        }
 
     if not response.encoding or response.encoding.lower() == "iso-8859-1":
         response.encoding = response.apparent_encoding or response.encoding
 
     page_text = normalize_text(extract_visible_text(response.text))
     normalized_targets = [normalize_text(target) for target in targets]
-    return {
+    result = {
         target: ("found" if normalized_target in page_text else "not found")
         for target, normalized_target in zip(targets, normalized_targets)
     }
+    result["status"] = "ok"
+    result["status_code"] = status_code
+    return result
 
 def main() -> None:
     args = parse_args()
@@ -127,8 +138,16 @@ def main() -> None:
     results = []
     for index, link in enumerate(links, start=1):
         result = check_link(link, targets, args.timeout)
-        if "error" in result:
-            status_text = result["error"]
+        status = result.get("status", "ok")
+        if status != "ok":
+            parts = [status]
+            code = result.get("status_code")
+            if code:
+                parts.append(f"({code})")
+            detail = result.get("detail")
+            if detail:
+                parts.append(f": {detail}")
+            status_text = " ".join(parts)
         else:
             status_text = ", ".join(f"{target}: {result[target]}" for target in targets)
         print(f"[{index}/{len(links)}] {link} -> {status_text}")

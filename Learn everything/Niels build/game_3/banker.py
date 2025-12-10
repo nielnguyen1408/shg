@@ -3,6 +3,7 @@ import itertools
 from typing import Dict, List, Optional, Tuple
 
 from config import (
+    BOARD_ONLY_PENALTY,
     BOARD_WEAK_BOARD_CALL_MULTIPLIER,
     DRAW_FOLD_MULTIPLIER,
     FLOP_BOTTOM_PAIR_MULTIPLIER,
@@ -15,6 +16,8 @@ from config import (
     PREFLOP_MIN_MULTIPLIER,
     RANKS,
     RIVER_WEAK_HAND_MULTIPLIER,
+    RIVER_BOARD_PAIR_PENALTY,
+    RIVER_BOARD_AIR_PENALTY,
     SUITS,
 )
 from poker_eval import best_hand, card_rank_value
@@ -304,21 +307,30 @@ def banker_folds(bet: int, pot: int, banker_cards: List[str], board_cards: List[
         level, tiebreak, best_combo = best_hand(banker_cards + board_cards)
         strength_multiplier = banker_strength_multiplier(level, tiebreak, best_combo, banker_cards, board_cards)
         board_level = board_texture_level(board_cards)
+        banker_cards_in_best = sum(1 for card in best_combo if card in banker_cards)
+        board_only = banker_plays_board_only(banker_cards, board_cards)
+        if board_only:
+            strength_multiplier *= BOARD_ONLY_PENALTY
         if board_level is not None and board_level <= 1:
             # On weak boards (high card / single pair) where banker only plays board,
             # reduce fold-equity so banker calls more and avoids over-folding chops.
-            if level == board_level and banker_plays_board_only(banker_cards, board_cards):
+            if level == board_level and board_only:
                 strength_multiplier *= BOARD_WEAK_BOARD_CALL_MULTIPLIER
         better, tie, worse, total, _ = range_strength_stats(banker_cards, board_cards)
         percentile = None
+        boardish_air = False
+        if board_level is not None and board_level >= 1 and banker_cards_in_best <= 1:
+            # Board-pair or paired board, banker adds at most one card (weak kicker) -> treat as near air.
+            boardish_air = True
         if total > 0:
             percentile = better / total  # 0 = nuts, 1 = worst
-            if percentile <= 0.1:
-                strength_multiplier *= 0.5
-            elif percentile <= 0.25:
-                strength_multiplier *= 0.65
-            elif percentile <= 0.5:
-                strength_multiplier *= 0.85
+            if not boardish_air:
+                if percentile <= 0.1:
+                    strength_multiplier *= 0.5
+                elif percentile <= 0.25:
+                    strength_multiplier *= 0.65
+                elif percentile <= 0.5:
+                    strength_multiplier *= 0.85
         if stage == "flop":
             category = pair_category(banker_cards, board_cards)
             if category == "top":
@@ -329,6 +341,10 @@ def banker_folds(bet: int, pot: int, banker_cards: List[str], board_cards: List[
                 strength_multiplier *= FLOP_BOTTOM_PAIR_MULTIPLIER
         if stage == "river" and level <= 1:
             strength_multiplier *= RIVER_WEAK_HAND_MULTIPLIER
+            # One-pair that only exists on the board faces extra fold pressure on river.
+            if level == 1 and board_level is not None and board_level >= 1 and banker_cards_in_best <= 1:
+                strength_multiplier *= RIVER_BOARD_PAIR_PENALTY
+                strength_multiplier *= RIVER_BOARD_AIR_PENALTY
     else:
         # Fallback (should not really happen in current flow).
         strength_multiplier = banker_strength_multiplier(0)

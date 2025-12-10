@@ -1,4 +1,4 @@
-from typing import List
+﻿from typing import List
 
 # Card configuration
 RANKS: List[str] = "2 3 4 5 6 7 8 9 T J Q K A".split()
@@ -24,7 +24,11 @@ FLOP_TOP_PAIR_MULTIPLIER: float = 0.6
 FLOP_MID_PAIR_MULTIPLIER: float = 0.8
 FLOP_BOTTOM_PAIR_MULTIPLIER: float = 0.95
 RIVER_WEAK_HAND_MULTIPLIER: float = 1.3
-# If banker is only “playing the board” on a weak board, reduce fold-equity so banker calls more.
+# Increase fold-equity when banker is only playing the board / has one-pair from board on river.
+BOARD_ONLY_PENALTY: float = 1.2
+RIVER_BOARD_PAIR_PENALTY: float = 1.3
+RIVER_BOARD_AIR_PENALTY: float = 1.6  # extra FE when banker only has board pair/kicker as pure air
+# If banker is only playing the board on a weak board, reduce fold-equity so banker calls more.
 BOARD_WEAK_BOARD_CALL_MULTIPLIER: float = 0.6
 
 # Pre-flop fold-equity tuning
