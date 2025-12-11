@@ -13,7 +13,7 @@ Thư mục này chứa công cụ Python để quét danh sách URL (site previe
 ## Cài đặt nhanh
 ```bash
 python -m venv .venv
-.venv\\Scripts\\activate        # Windows
+.\.venv\Scripts\Activate.ps1    # Windows
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
@@ -42,3 +42,19 @@ Mặc định script dùng chuỗi `TARGET_TEXT` khai báo trong file (hiện đ
 - Nếu trang chậm/treo, dùng `--timeout` để chỉnh thời gian chờ; nếu cần bỏ qua lỗi, có thể chia nhỏ danh sách và chạy nhiều lần.
 - Dữ liệu đầu vào nên ở UTF-8 (file CSV hiện dùng BOM UTF-8), mỗi dòng một URL; bỏ dòng trống hoặc dòng bắt đầu bằng `#`.
 - Kiểm tra tường lửa/proxy nếu thấy nhiều lỗi kết nối.
+
+# Cách hoạt động check 404 redirect
+
+python quick_check_404.py links_test.csv --output quick_check_result.xlsx
+<!-- 
+Sử dụng links_final.csv để kiểm tra  
+Nên dùng một phần link nhỏ để chạy cho ổn định
+-->
+python quick_check_404.py links_final.csv --output quick_check_result.xlsx
+
+# Kiểm tra tổng thể
+python check_links.py links_final.csv --target "thông số kỹ thuật" --target "đặc điểm nổi bật" --target "công năng" --output "final.xlsx"
+
+# Kiểm tra sản phẩm KEY
+python check_hot_product.py links_final.csv --output hot_product_result.xlsx
+<!-- optional: adjust --threshold or --timeout as needed>

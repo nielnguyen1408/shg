@@ -102,17 +102,30 @@ def check_link(url: str, targets: List[str], timeout: float) -> dict[str, str]:
             url,
             headers={"User-Agent": USER_AGENT},
             timeout=timeout,
+            allow_redirects=True,
         )
     except requests.RequestException as exc:
-        return {"status": "request_error", "detail": str(exc)}
+        return {
+            "status": "request_error",
+            "detail": str(exc),
+            "status_code": "",
+            "final_url": "",
+            "redirected": False,
+        }
 
     status_code = response.status_code
+    final_url = response.url
+    redirected = bool(response.history)
+    reason = response.reason or ""
+
     if status_code >= 400:
-        # Stop early on HTTP errors; no need to parse body.
+        response.close()
         return {
             "status": "http_error",
             "status_code": status_code,
-            "detail": response.reason or "",
+            "detail": reason,
+            "final_url": final_url,
+            "redirected": redirected,
         }
 
     if not response.encoding or response.encoding.lower() == "iso-8859-1":
@@ -120,12 +133,17 @@ def check_link(url: str, targets: List[str], timeout: float) -> dict[str, str]:
 
     page_text = normalize_text(extract_visible_text(response.text))
     normalized_targets = [normalize_text(target) for target in targets]
-    result = {
+    result: dict[str, str] = {
         target: ("found" if normalized_target in page_text else "not found")
         for target, normalized_target in zip(targets, normalized_targets)
     }
+    response.close()
+
     result["status"] = "ok"
     result["status_code"] = status_code
+    result["detail"] = reason
+    result["final_url"] = final_url
+    result["redirected"] = redirected
     return result
 
 def main() -> None:
@@ -144,12 +162,25 @@ def main() -> None:
             code = result.get("status_code")
             if code:
                 parts.append(f"({code})")
+            if result.get("redirected"):
+                parts.append(f"redirected -> {result.get('final_url')}")
             detail = result.get("detail")
             if detail:
                 parts.append(f": {detail}")
             status_text = " ".join(parts)
         else:
             status_text = ", ".join(f"{target}: {result[target]}" for target in targets)
+            extras = []
+            code = result.get("status_code")
+            if code:
+                extras.append(f"status={code}")
+            if result.get("redirected"):
+                extras.append(f"redirected -> {result.get('final_url')}")
+            detail = result.get("detail")
+            if detail:
+                extras.append(detail)
+            if extras:
+                status_text += " | " + "; ".join(extras)
         print(f"[{index}/{len(links)}] {link} -> {status_text}")
 
         row = {"link": link}
